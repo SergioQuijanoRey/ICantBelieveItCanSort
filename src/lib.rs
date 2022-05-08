@@ -1,7 +1,9 @@
+
 /// The main sorting algorithm
 /// It creates a copy of the original values and returns that copy sorted
 /// It sorts in non-decreasing order
-pub fn ICantBelieveItCanSort<T>(values: Vec<T>) -> Vec<T> where T: Ord + Clone {
+pub fn ICantBelieveItCanSort<T>(values: Vec<T>) -> Vec<T>
+where T: Ord + Clone {
 
     // Start cloning the values into a mutable vector
     let mut new_values = values.clone();
@@ -10,9 +12,7 @@ pub fn ICantBelieveItCanSort<T>(values: Vec<T>) -> Vec<T> where T: Ord + Clone {
     for i in 1..new_values.len(){
         for j in 1..new_values.len(){
             if new_values[i] < new_values[j]{
-                let tmp = new_values[i].clone();
-                new_values[i] = new_values[j].clone();
-                new_values[j] = tmp;
+                new_values.swap(i, j);
             }
         }
     }
@@ -26,7 +26,7 @@ mod tests {
 
     use super::ICantBelieveItCanSort;
 
-    // For checking that a vec is sorted in non-decreasing order
+    /// For checking that a vec is sorted in non-decreasing order
     fn check_non_decreasing_sorted<T: Ord>(values: Vec<T>) -> bool{
 
         for first in 1..values.len(){
