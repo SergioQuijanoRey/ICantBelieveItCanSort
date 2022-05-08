@@ -69,6 +69,8 @@ impl ICantBelieveItCanSort{
 #[cfg(test)]
 mod tests {
 
+    use std::fmt;
+
     use super::ICantBelieveItCanSort;
 
     /// For checking that a vec is sorted in non-decreasing order
@@ -89,7 +91,7 @@ mod tests {
     }
 
     /// For checking that a vec is sorted in non-increasing order
-    fn check_non_increasing_sorted<T: Ord>(values: Vec<T>) -> bool{
+    fn check_non_increasing_sorted<T: Ord + fmt::Display>(values: Vec<T>) -> bool{
 
         for first in 1..values.len(){
             for second in first..values.len(){
@@ -216,7 +218,6 @@ mod tests {
         ICantBelieveItCanSort::sort_by(&mut values, criteria);
         assert!(check_non_increasing_sorted(values));
 
-
         let mut values = vec![3, 3, 3, 3, 3];
         ICantBelieveItCanSort::sort_by(&mut values, criteria);
         assert!(check_non_increasing_sorted(values));
@@ -229,6 +230,7 @@ mod tests {
         ICantBelieveItCanSort::sort_by(&mut values, criteria);
         assert!(check_non_increasing_sorted(values));
 
+        // TODO -- this makes the test fail
         let mut values = vec![-1, -10, 2, -14, 15];
         ICantBelieveItCanSort::sort_by(&mut values, criteria);
         assert!(check_non_decreasing_sorted(values));
