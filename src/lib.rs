@@ -41,6 +41,7 @@ impl ICantBelieveItCanSort{
     /// Sort a given vector of values, without mutating the original vector of values
     /// Thus, a clone is created, sorted and returned
     /// `criteria(first, second)` replaces `first < second` comparison
+    /// Note than criteria now dictates what prev was done by T: Ord, so T:Ord is no longer needed
     pub fn sorted_by<T>(values: Vec<T>, criteria: fn(&T, &T) -> bool) -> Vec<T>
     where T: Clone{
         // Start cloning the values into a mutable vector
@@ -57,6 +58,21 @@ impl ICantBelieveItCanSort{
 
         return new_values;
 
+    }
+
+    /// Sort a given vector of values, without mutating the original vector of values
+    /// `criteria(first, second)` replaces `first < second` comparison
+    /// Note than criteria now dictates what prev was done by T: Ord, so T:Ord is no longer needed
+    pub fn sort_by<T>(values: &mut Vec<T>, criteria: fn(&T, &T) -> bool){
+
+        // Use the sorting algo
+        for i in 1..values.len(){
+            for j in 1..values.len(){
+                if criteria(&values[i], &values[j]){
+                    values.swap(i, j);
+                }
+            }
+        }
     }
 
 }
@@ -195,5 +211,39 @@ mod tests {
         let sorted_values = ICantBelieveItCanSort::sorted_by(values, criteria);
         assert!(check_non_increasing_sorted(sorted_values));
     }
-}
 
+    #[test]
+    fn basic_cases_sort_with_criteria() {
+
+        // The criteria we are going to use
+        // Invert the sorting order
+        fn criteria(first: &i32, second: &i32) -> bool{
+            return first > second;
+        }
+
+        let mut values = vec![6, 6, 5, 1, 2, 3, 9];
+        ICantBelieveItCanSort::sort_by(&mut values, criteria);
+        assert!(check_non_increasing_sorted(values));
+
+        let mut values = vec![3, 1, 4, 1, 5, 9, 2];
+        ICantBelieveItCanSort::sort_by(&mut values, criteria);
+        assert!(check_non_increasing_sorted(values));
+
+
+        let mut values = vec![3, 3, 3, 3, 3];
+        ICantBelieveItCanSort::sort_by(&mut values, criteria);
+        assert!(check_non_increasing_sorted(values));
+
+        let mut values = vec![1, 2, 3, 4, 5, 6];
+        ICantBelieveItCanSort::sort_by(&mut values, criteria);
+        assert!(check_non_increasing_sorted(values));
+
+        let mut values = vec![9, 5, 3, 2, 1];
+        ICantBelieveItCanSort::sort_by(&mut values, criteria);
+        assert!(check_non_increasing_sorted(values));
+
+        let mut values = vec![-1, -10, 2, -14, 15];
+        ICantBelieveItCanSort::sort_by(&mut values, criteria);
+        assert!(check_non_decreasing_sorted(values));
+    }
+}
