@@ -40,14 +40,8 @@ impl ICantBelieveItCanSort{
         // Start cloning the values into a mutable vector
         let mut new_values = values.clone();
 
-        // Use the sorting algo
-        for i in 1..new_values.len(){
-            for j in 1..new_values.len(){
-                if criteria(&new_values[i], &new_values[j]){
-                    new_values.swap(i, j);
-                }
-            }
-        }
+        // Re-use the logic of sort_by
+        Self::sort_by(&mut new_values, criteria);
 
         return new_values;
 
