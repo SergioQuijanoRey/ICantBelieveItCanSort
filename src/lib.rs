@@ -13,15 +13,8 @@ impl ICantBelieveItCanSort{
         // Start cloning the values into a mutable vector
         let mut new_values = values.clone();
 
-        // Use the sorting algo
-        for i in 1..new_values.len(){
-            for j in 1..new_values.len(){
-                if new_values[i] < new_values[j]{
-                    new_values.swap(i, j);
-                }
-            }
-        }
-
+        // Use the logic implemented in Self::sort to do the same sorting
+        Self::sort(&mut new_values);
         return new_values;
     }
 
